@@ -1,0 +1,26 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <DistDirectory>dist</DistDirectory>
+    </PropertyGroup>
+    <ItemGroup>  
+        <Compile Include="*.dpr" />
+        <Executable Include="main.exe" />
+    </ItemGroup>
+    <Target Name="clean">  
+        <Message Text="Clean" /> 
+        <Exec Command="del *.o *.ppu units\\*.o units\\*.ppu" />
+    </Target>
+    <Target Name="deletebuild">
+        <Exec Command="rmdir /S /Q dist" />
+    </Target>
+    <Target Name="compile">
+        <Message Text="Compile" />
+        <Exec Command="fpc -S2 -Mdelphi -Fuunits @(Compile)" />
+    </Target>
+    <Target Name="build" DependsOnTargets="deletebuild;compile">  
+        <Message Text="Build target" /> 
+        <MakeDir Directories="$(DistDirectory)" />
+        <Exec Command="move @(Executable) $(DistDirectory)" />
+        <CallTarget Targets="clean" />
+    </Target>
+</Project>
