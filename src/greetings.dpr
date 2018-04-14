@@ -4,7 +4,7 @@ uses
   helloworld,
   helloyou;
 
-procedure SayHi;
+function SayHi():String;
 
 var
   miClase: THelloWorld;
@@ -18,9 +18,9 @@ begin
   finally
     miClase.Free;
     otraClase.Free;
-  
-  WriteLn(output);
   end;
+
+  Result := output;
 end;
 
 exports 

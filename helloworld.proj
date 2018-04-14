@@ -6,24 +6,14 @@
         <SourceFolder Include="src" />
         <DistFolder Include="dist" />
         <UnitsFolder Include="src\units" />
-        <Library Include="dist\greetings.dll" />
     </ItemGroup>
     <Target Name="clean">  
         <Message Text="Clean" /> 
-        <Exec Command="del @(DistFolder)\*.o @(DistFolder)\*.ppu" />
-    </Target>
-    <Target Name="deletebuild">
         <Exec Command="rmdir /S /Q dist" />
     </Target>
-    <Target Name="compile">
-        <Message Text="Compile" />
-        <Exec Command="fpc -S2 -U -XD src/units/helloworld.pas" />
-        <Exec Command="fpc -S2 -U -XD src/units/helloyou.pas" />
-    </Target>
-    <Target Name="build" DependsOnTargets="deletebuild">  
+    <Target Name="build">  
         <Message Text="Build target" /> 
         <MakeDir Directories="@(DistFolder)" />
         <Exec Command="fpc -S2 -Fu@(UnitsFolder) -FE@(DistFolder) src/greetings.dpr" />
-        <CallTarget Targets="clean" />
     </Target>
 </Project>
