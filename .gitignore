@@ -67,5 +67,3 @@ __recovery/
 
 # Custom extensions
 *.ppu
-
-dist/

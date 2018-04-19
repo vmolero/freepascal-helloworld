@@ -18,7 +18,7 @@ end;
 
 function THelloYou.helloyou: String;
 begin
-    Result := 'Hello YOU again';
+    Result := 'Hello YOU again, time and again';
 end;
 
 end.

@@ -1,19 +1,34 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        
+        <SourceFolder>src</SourceFolder>
+        <UnitsFolder>$(SourceFolder)\units</UnitsFolder>
+        <DistFolder>dist</DistFolder>
     </PropertyGroup>
     <ItemGroup>  
-        <SourceFolder Include="src" />
-        <DistFolder Include="dist" />
-        <UnitsFolder Include="src\units" />
+        <PasFiles Include="$(UnitsFolder)\*.pas" />
+        <DprFiles Include="$(SourceFolder)\*.dpr" />
+        <DllFiles Include="$(DistFolder)\*.dll" />
+        <ExeFiles Include="$(DistFolder)\*.exe" />
+        <PpuFiles Include="$(DistFolder)\*.ppu" />
+        <OFiles Include="$(DistFolder)\*.o" />
     </ItemGroup>
     <Target Name="clean">  
         <Message Text="Clean" /> 
         <Exec Command="rmdir /S /Q dist" />
     </Target>
-    <Target Name="build">  
-        <Message Text="Build target" /> 
-        <MakeDir Directories="@(DistFolder)" />
-        <Exec Command="fpc -S2 -Fu@(UnitsFolder) -FE@(DistFolder) src/greetings.dpr" />
+    <Target Name="_createDistFolder">  
+        <MakeDir Directories="$(DistFolder)" />
+    </Target>
+    <Target Name="builddll" DependsOnTargets="_createDistFolder"
+            Inputs="@(PasFiles);$(DprFiles)"
+            Outputs="@(PasFiles -> '$(DistFolder)\%(Filename).ppu');@(PasFiles -> '$(DistFolder)\%(Filename).o');@(DprFiles -> '$(DistFolder)\%(Filename).dll')">  
+        <Message Text="Build dll target" /> 
+        <Exec Command="fpc -S2 -Fu$(UnitsFolder) -FE$(DistFolder) $(SourceFolder)\greetings.dpr" />
+    </Target>
+    <Target Name="build" DependsOnTargets="_createDistFolder"
+            Inputs="@(PasFiles);src\main.dpr"
+            Outputs="@(PasFiles -> '$(DistFolder)\%(Filename).ppu');@(PasFiles -> '$(DistFolder)\%(Filename).o');dist\main.exe">  
+        <Message Text="Build exe target" /> 
+        <Exec Command="fpc -S2 -Fu$(UnitsFolder) -FE$(DistFolder) $(SourceFolder)\main.dpr" />
     </Target>
 </Project>
