@@ -11,8 +11,8 @@ EXE			= hello
 
 all: compile 
 
-compile: main.dpr
-	$(FPC) $(FPCFLAGS) $(source)/$< $(OUTPUT) $(UNITS) -o$(EXE)
+compile: $(source)/main.dpr
+	$(FPC) $(FPCFLAGS) $< $(OUTPUT) $(UNITS) -o$(EXE)
 
 dist:
 	mkdir $@
