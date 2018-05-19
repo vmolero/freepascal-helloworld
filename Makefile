@@ -4,19 +4,20 @@
 dist		= dist
 source	= src
 FPC     = fpc
-FPCFLAGS  = -Tlinux -O1 -l
+FPCFLAGS  = -S2 -Tlinux -O1 -l
 OUTPUT	= -FE$(dist)
 UNITS		= -Fu$(source)/units
+EXE			= hello
 
-all: build clean
+all: compile 
 
-hello: main.dpr
-	$(FPC) -S2 $(FPCFLAGS) $(source)/$< $(OUTPUT) $(UNITS) -o$@
+compile: main.dpr
+	$(FPC) $(FPCFLAGS) $(source)/$< $(OUTPUT) $(UNITS) -o$(EXE)
 
 dist:
 	mkdir $@
 
-build: dist hello
+build: dist compile clean
 
 .PHONY: clean cleanest
 
@@ -24,4 +25,4 @@ clean:
 	rm $(dist)/*.o $(dist)/*.ppu
 
 cleanest: clean
-	rm $(dist)/hello
+	rm $(dist)/$(EXE)
